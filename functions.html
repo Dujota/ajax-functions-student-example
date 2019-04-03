@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <script>
+      var pikachu = {
+        age: 5,
+        is_default: function() {
+          if (this.default) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        text: 'text',
+        arr: [1, 2, 3],
+        obj: {
+          k: 'value'
+        },
+        pokeApi: function() {
+          return 'https://pokeapi.co/api/v2/pokemon/pikachu';
+        }
+      };
+
+      var j = {
+        valid: 'json',
+        not: 'valid json key: value'
+      };
+
+      // While not default
+      console.log(pikachu);
+      console.log(pikachu.is_default()); // false
+
+      // Set default
+      pikachu.default = true;
+      console.log(pikachu);
+      console.log(pikachu.is_default()); // true
+
+      /*
+
+      If you dont use an object to store your functions
+      ie: obj = {
+        myFunc: function(param){console.log(param)}
+      }
+
+      we use function expressions (var name = function(){} ) so we can easily reference them
+      */
+      var myfunc = function(parameter) {
+        console.log(parameter);
+      };
+
+      myfunc('hello World');
+
+      // lets build an api call
+      var giphyApi = '';
+      var pokeApi = 'https://pokeapi.co/api/v2/pokemon/pikachu';
+
+      // API Calls and building an ajax response
+      $.ajax(pokeApi)
+        /*
+        rather than calling a response, just call it what you expect to get back
+        if you expect a list, you make the name plural, if only one item name it singular. (posts vs post)
+      */
+
+        // When ajax is done & successfull, run this function
+        .done(function(pokemon) {
+          console.log(pokemon);
+        })
+
+        /*
+          Then run these (OPTIONAL),
+          usually for some kind of setup that needs to happen in some controlled order,
+          EX: when ajax done you get a list of users and save it  .
+          then filter that list for users for studends only
+          then build profile card for all the students
+          the response controll callback happen in the order they are arranged
+         */
+        .then(console.log('no callback just the console log'))
+        .then(function() {
+          console.log('third thing to do ');
+        })
+
+        // You want to catch the error if it happens, ex: your password does not match, thats how they do that on sites
+        .fail(function(error) {
+          console.log(error);
+        })
+
+        /* (Optional)
+          if you need something to run/happen no matter what the outcome of the ajax call, you do it here.
+        */
+        .always(console.log('always say hello'));
+
+      // Short hand if you just want to call an api for data.
+      $.getJSON(pokeApi).done(function(pokemon) {
+        console.log(pokemon);
+      });
+
+      $.ajax({ pokeApi })
+        .done(function(parameter) {})
+        .then()
+        .fail(function(error) {
+          console.log(error);
+        });
+
+      // how the .done() function could possible look inside the jquery library
+
+      // receives a callback and the jQuery response object
+      function done(callback, jqxhr) {
+        // check if it is  successful
+        if (jqxhr.responseCode === 4) {
+          // use the callback example: .done() function(res){ console.log(res) })
+          callback(jqxhr.response);
+        } else {
+          // move on to the .fail(callback) block
+          fail(jqxhr.errors);
+        }
+      }
+
+      $.ajax();
+    </script>
+  </body>
+</html>
